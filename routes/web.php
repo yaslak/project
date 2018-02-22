@@ -18,3 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/language-chooser','App\LanguageController@changeLanguage');
+Route::post('/language/',array(
+    'before' => 'csrf',
+    'as' => 'language-chooser',
+    'uses' => 'App\LanguageController@changeLanguage'
+));

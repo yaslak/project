@@ -42,6 +42,13 @@
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                            <form action="/language">
+                                <input type="hidden" name="_token" id="csrf_token" value="{{csrf_token()}}">
+                                <select name="language" id="language">
+                                    <option value="fr" {{ app()->getLocale() == 'fr' ? 'selected': '' }}>français</option>
+                                    <option value="ar" {{ app()->getLocale() == 'ar' ? 'selected': '' }}>arabic</option>
+                                </select>
+                            </form>
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
