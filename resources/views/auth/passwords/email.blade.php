@@ -1,47 +1,34 @@
-@extends('layouts.app')
+@extends('layouts.blogLayout')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Reset Password</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+    <div class="card border-warning col-md-8 offset-md-2">
+        <div class="card-header border-warning">
+            <h6 class="text-warning">Récupération par adresse e-mail :</h6>
+        </div>
+        <div class="card-body">
+            <p class="text-light">
+                Votre code de sécurité à été envoyer a votre adresse mail veuillez verifier votre boite mail.
+            </p>
+            {!! Form::open(['method'=>'put','class'=>'form-horizontal']) !!}
+                <div class="form-group">
+                    {{ Form::label('code','Votre code de sécurité :',['class'=>'text-secondary']) }}
+                    <input type="text" name="code" id="code" value="{{old('code')}}" class="form-control bg-secondary text-warning {{$errors->has('code') ? 'border-danger':'border-warning'}}" autofocus required>
                 </div>
+            @if($errors->has('code'))
+                <em class="text-danger form-text">{{$errors->first('code')}}</em>
+            @endif
+                <div class="form-group">
+                    {{ Form::submit('Soumettre',['class'=>'btn btn-outline-warning float-right']) }}
+                </div>
+            {!! Form::close() !!}
+        </div>
+        <div class="card-footer">
+            <div class="form-text">
+            <em class="text-secondary">
+                Si vous n'avez trouvez aucun mail veuillez verifier votre boite de spam,
+                Si le problème persiste veuillez actualisé la page pour renvoyer le mail a nouveau.
+            </em>
             </div>
         </div>
     </div>
-</div>
 @endsection

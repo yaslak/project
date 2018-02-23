@@ -16,6 +16,7 @@ class LanguageController extends Controller
      * @request ajax
      * @param Request $request
      */
+
     public function changeLanguage(Request $request)
     {
         if($request->ajax()){
