@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Request $request)
     {
         Schema::defaultStringLength(191);
-        if(!$request->ajax()){
+        if(!$request->ajax){
             view()->composer('*', function($view) use($request) {
                 $view->with('user', auth()->user())
                     ->with('template','layouts.layout');

@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends(isset($template)? 'layouts.layout' : 'layouts.baseLayout')
 @section('content-body')
     <!-- Wizard with validation -->
     <div class="panel panel-danger">
@@ -445,8 +445,10 @@
     </div>
     <!-- /wizard with validation -->
 @stop
+@section('title')
+    Recover
+@stop
 <!--
-    typographie.
     form système.
     recover.
     psw reset.

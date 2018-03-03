@@ -1,23 +1,10 @@
 
 @extends(isset($template)? 'layouts.layout' : 'layouts.baseLayout')
 
-@section('content-header')
-    <!-- Page header -->
-    <div id="progress">
-        <div id="wrap-progress"></div>
-        <div id="progress-bar">
-            <div class="pace-demo" style="padding: 30px">
-                <div class="theme_xbox_xs theme_xbox_with_text">
-                    <div class="pace_progress" data-progress-text="60%" data-progress="60"></div>
-                    <div class="pace_activity"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- /page header -->
+@section('title')
+    Accueil
 @endsection
-
 @section('content-body')
     <!-- Main charts -->
     <div class="row">

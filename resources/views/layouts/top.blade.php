@@ -70,7 +70,7 @@
         </div>
         @else
             <div class="navbar-header">
-                <a class="navbar-brand" data-navigation="true" data-response="#data" data-type="get" href="{{route('home')}}">
+                <a class="navbar-brand" data-navigation="true" data-title="Accueil" href="{{route('home')}}">
                     <img src="{{asset('images/logo_light.png')}}" alt="">
                 </a>
                 <ul class="nav navbar-nav visible-xs-block">
@@ -318,7 +318,11 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="#"><i class="icon-user-plus"></i> My profile</a></li>
+                            <li>
+                                <a href="{{route('recover.recover')}}" data-navigation="true" data-title="Recover">
+                                    <i class="icon-user-plus"></i> My profile
+                                </a>
+                            </li>
                             <li><a href="#"><i class="icon-coins"></i> My balance</a></li>
                             <li><a href="#"><span class="badge bg-teal-400 pull-right">58</span> <i
                                             class="icon-comment-discussion"></i> Messages</a></li>
