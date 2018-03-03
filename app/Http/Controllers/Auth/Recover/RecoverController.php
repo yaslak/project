@@ -16,17 +16,17 @@ class RecoverController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
-
+       $this->middleware('auth');
     }
 
     public function index()
     {
         $user = Auth::user();
         if(!$this->recover($user)){
-            return view('recover.recover');
+            return view('recover.recover',compact('user'));
         }
         return redirect(route('recoverMail.show'));
+
     }
 
     public function store()

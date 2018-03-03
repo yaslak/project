@@ -49,15 +49,15 @@ Route::namespace('Auth\Password')->prefix('password')->middleware('guest')->grou
 });
 
 // Recover
-Route::group(['prefix'=>'recover'], function (){
-    Route::get('recover','Auth\Recover\RecoverController@index')->name('recover.recover');
-    Route::put('recover','Auth\Recover\RecoverController@store')->name('recover.store');
-    Route::get('mail','Auth\Recover\MailController@index')->name('recoverMail.show');
-    Route::post('mail','Auth\Recover\MailController@return')->name('recoverMail.return');
-    Route::put('mail','Auth\Recover\MailController@store')->name('recoverMail.store');
-    Route::get('sq','Auth\Recover\SqController@show')->name('recoverSq.show');
-    Route::post('sq','Auth\Recover\SqController@store')->name('recoverSq.store');
-    Route::put('sq','Auth\Recover\SqController@update')->name('recoverSq.update');
+Route::namespace('Auth\Recover')->prefix('recover')->group( function (){
+    Route::get('recover','RecoverController@index')->name('recover.recover');
+    Route::put('recover','RecoverController@store')->name('recover.store');
+    Route::get('mail','MailController@index')->name('recoverMail.show');
+    Route::post('mail','MailController@return')->name('recoverMail.return');
+    Route::put('mail','MailController@store')->name('recoverMail.store');
+    Route::get('sq','SqController@show')->name('recoverSq.show');
+    Route::post('sq','SqController@store')->name('recoverSq.store');
+    Route::put('sq','SqController@update')->name('recoverSq.update');
 });
 
 // profil

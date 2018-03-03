@@ -1,0 +1,21 @@
+#wrap-progress
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    z-index: 1055;
+    opacity: 0.85;
+
+}
+#progress-bar
+{
+    position: fixed;
+    z-index: 1060;
+    top:calc(50% - 80px);
+    left:calc(50% - 80px);
+    opacity: 0.5;
+}
+#progress{display: none}

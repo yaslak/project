@@ -1,4 +1,4 @@
-@extends('layouts.blogLayout')
+@extends('layouts.layout')
 @section('content')
     <div class="card border-warning col-md-8 offset-md-2">
         <div class="card-header border-warning">

@@ -31,11 +31,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\Recover\Recovered::class,
             \App\Http\Middleware\Language::class,
         ],
 
@@ -62,5 +61,6 @@ class Kernel extends HttpKernel
         'recover.mail' => \App\Http\Middleware\Recover\RecoverMail::class,
         'recover.sq' => \App\Http\Middleware\Recover\RecoverSq::class,
         'recover.password' => \App\Http\Middleware\Recover\PasswordRecovering::class,
+        'recovred'=> \App\Http\Middleware\Recover\Recovered::class,
     ];
 }

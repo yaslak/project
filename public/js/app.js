@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    $('#language').change(function () {
-        var locale = $(this).val();
-        var _token = $("input[name=_token]").val();
+    $('#lang-switcher a').click(function () {
+        var locale = $(this).attr('data-lang');
+        var _token = $("form#language>input[name=_token]").val();
         $.ajax({
             url: "/language",
             type: 'POST',
@@ -20,5 +20,28 @@ $(document).ready(function () {
                 window.location.reload(true);
             }
         })
+    });
+    /*
+    $('#navbar-brand').click(function (e) {
+        e.preventDefault();
+        var $d = $('#data');
+        $.ajax({
+            url: "/",
+            type: 'get',
+            datatype: 'json',
+            success: function (data) {
+
+            },
+            error:function (data) {
+
+            },
+            beforeSend:function (data) {
+
+            },
+            complete:function (data) {
+               $d.html(data.responseText)
+            }
+        })
     })
+    */
 });

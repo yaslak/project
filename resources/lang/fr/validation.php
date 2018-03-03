@@ -146,6 +146,15 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
+        'user'                  => 'Utilisateur',
+        'remember'              => 'Se souvenir de mon compte',
+        'Forgot'                => "j'ai oublié mon mot de passe ?",
+        'login'                 => 'S\'identifier',
+        'register'              => 'S\'inscrire',
+        'online'                => 'en ligne',
+        'offline'               => 'hors ligne',
+        'create-password'       => 'Créer un mot de passe',
+        'confirm-password'       => 'Confirmez le mot de passe',
     ],
 
 ];
