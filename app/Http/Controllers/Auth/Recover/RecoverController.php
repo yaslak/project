@@ -26,7 +26,6 @@ class RecoverController extends Controller
             return view('recover.recover',compact('user'));
         }
         return redirect(route('recoverMail.show'));
-
     }
 
     public function store()

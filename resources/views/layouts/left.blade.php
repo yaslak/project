@@ -1,5 +1,4 @@
-@if(isset($template))
-    @auth
+@auth
         <!-- Main sidebar -->
         <div class="sidebar sidebar-main">
             <div class="sidebar-content">
@@ -786,4 +785,3 @@
         </div>
         <!-- /main sidebar -->
     @endauth
-@endif

@@ -1,15 +1,7 @@
-
-@extends(isset($template)? 'layouts.layout' : 'layouts.baseLayout')
-
-
-@section('title')
-    Accueil
-@endsection
-@section('content-body')
-    <!-- Main charts -->
+<span id="title-page" class="hidden">home</span>
+<div class="content">
     <div class="row">
         <div class="col-lg-7">
-
             <!-- Traffic sources -->
             <div class="panel panel-flat">
                 <div class="panel-heading">
@@ -1762,4 +1754,4 @@
         </div>
     </div>
     <!-- /dashboard content -->
-@endsection
+</div>

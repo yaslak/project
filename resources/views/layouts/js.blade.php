@@ -21,3 +21,4 @@
 <!-- /theme JS files -->
 <script type="text/javascript" src="{{ asset('js/app.js')}}"></script>
 <script type="text/javascript" src="{{ asset('js/navigation.js')}}"></script>
+

@@ -1,4 +1,4 @@
-@if(isset($template))
+
 <!-- Footer -->
 <div class="navbar navbar-default navbar-fixed-bottom">
     <ul class="nav navbar-nav no-border visible-xs-block">
@@ -34,4 +34,3 @@
     </div>
 </div>
 <!-- /footer -->
-@endif

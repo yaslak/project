@@ -36,6 +36,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\Language::class,
+
         ],
 
         'api' => [
@@ -62,5 +63,6 @@ class Kernel extends HttpKernel
         'recover.sq' => \App\Http\Middleware\Recover\RecoverSq::class,
         'recover.password' => \App\Http\Middleware\Recover\PasswordRecovering::class,
         'recovred'=> \App\Http\Middleware\Recover\Recovered::class,
+        'layout' => \App\Http\Middleware\Navigation::class,
     ];
 }

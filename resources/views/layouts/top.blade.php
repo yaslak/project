@@ -1,5 +1,4 @@
 <!-- Main navbar -->
-@if(isset($template))
 <div class="navbar navbar-inverse">
     @guest
         <div class="navbar-header">
@@ -345,4 +344,3 @@
             @endguest
 </div>
 <!-- /main navbar -->
-@endif

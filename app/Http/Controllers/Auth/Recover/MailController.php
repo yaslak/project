@@ -33,7 +33,7 @@ class MailController extends Controller
 
     public function mail($user, $token, $mailer, $success)
     {
-        $this->send($user,$token,$mailer);
+       // $this->send($user,$token,$mailer);
         Session()->flash('success',$success);
         return view('recover.email');
     }

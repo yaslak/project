@@ -1,34 +1,35 @@
 @extends('layouts.layout')
-@section('content')
-    <div class="card border-warning col-md-8 offset-md-2">
-        <div class="card-header border-warning">
-            <h5 class="text-warning">Code de sécurité :</h5>
+
+@section('title') Validation adresse e-mail @stop
+@section('content-body')
+    <div class="panel border-slate-300 panel-bordered">
+        <div class="panel-heading bg-slate-300">
+            <h6 class="panel-title">
+                Code de sécurité :
+            </h6>
+            <div class="heading-elements">
+                <i class="icon-lock text-slate-600 mt-3"></i>
+            </div>
         </div>
-        <div class="card-body">
-            <p class="text-secondary">
-                un mail a été envoyer sur votre boite mail veuillez indiquez le code de sécurité
+
+        <div class="panel-body">
+            <p style="vertical-align: inherit;">
+                @if(isset($user)) <b>{{$user->name}}</b> @endif, un mail a été envoyer
+                    sur votre boite mail, contenant un code de sécurité veuillez l'indiquez.
             </p>
-            {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','url'=>route('recoverMail.store')]) !!}
-            <div class="form-group">
-                {{ Form::label('token','Code de sécurité') }}
-                <input type="text" name="token" id="token" value="{{old('token')}}" class="form-control bg-secondary text-warning {{$errors->has('token') ? 'border-danger':'border-warning'}}" autofocus required>
-                @if($errors->has('token'))
-                    <p class="text-danger form-text">
-                        {{$errors->first('token')}}
-                    </p>
-                @endif
-            </div>
-            <div class="form-group">
-                {{ Form::submit('valider',['class'=>'btn btn-outline-warning float-right']) }}
-            </div>
-            {!! Form::close() !!}
-        </div>
-        <div class="card-footer">
-            <div class="form-text">
-                <em class="text-secondary">
-                    Si vous n'avez trouvez aucun mail veuillez verifier votre boite de spam,
-                    Si le problème persiste veuillez actualisé la page pour renvoyer le mail a nouveau.
-                </em>
+            <div>
+                {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','id'=>'recover-mail', 'url'=>route('recoverMail.store')]) !!}
+                    {{ Form::label('token','Code de sécurité :') }}
+                    <div class="input-group">
+                        <span class="input-group-addon bg-slate-700"><i class="icon-lock2"></i></span>
+                        <input type="text" name="token" id="token" value="{{old('token')}}" class="form-control bg-slate-300 {{$errors->has('token') ? 'border-danger':''}}" placeholder="Votre code de sécurité" autofocus required>
+                        <span class="input-group-addon bg-slate-700"><i class="icon-help"></i></span>
+                    </div>
+                <div class="stepy-navigator mt-5">
+                    <button type="submit" class="position-right button-next btn btn-primary">Envoyer <i class="icon-arrow-right14 position-right"></i></button>
+                    </div>
+                    </div>
+                {!! Form::close()!!}
             </div>
         </div>
     </div>
