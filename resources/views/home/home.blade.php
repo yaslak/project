@@ -1,4 +1,7 @@
-<span id="title-page" class="hidden">home</span>
+<div id="user-agent">
+    <span id="title-page">Accueil</span>
+    <span id="url-current">/</span>
+</div>
 <div class="content">
     <div class="row">
         <div class="col-lg-7">

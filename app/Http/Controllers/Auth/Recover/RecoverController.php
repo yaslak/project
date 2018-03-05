@@ -23,7 +23,7 @@ class RecoverController extends Controller
     {
         $user = Auth::user();
         if(!$this->recover($user)){
-            return view('recover.recover',compact('user'));
+            return view('recover.recover')->with(compact('user'));
         }
         return redirect(route('recoverMail.show'));
     }

@@ -35,14 +35,14 @@ class MailController extends Controller
     {
        // $this->send($user,$token,$mailer);
         Session()->flash('success',$success);
-        return view('recover.email');
+        return view('recover.email')->with(compact('user'));
     }
 
     public function store(Mail $request)
     {
         $user = Auth::user();
         if($this->token($user) != $request->token){
-           return view('recover.email')->withErrors(['token'=>'le code que vous indiquez est erroné']);
+           return back()->withErrors(['token'=>'le code que vous indiquez est erroné'])->withInput(['token']);
         }
         $user->recover()->update(['email'=>true, 'token' => false]);
         Session()->flash('success','Votre adresse mail est bien été valider');

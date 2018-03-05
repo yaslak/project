@@ -1,4 +1,27 @@
 $(document).ready(function () {
+    $('body').on('submit','form',function(e) {
+        e.preventDefault();
+        $.ajax({
+            url:  $(this).attr('action'),
+            method: $(this).attr('method'),
+            data:$(this).serialize(),
+            datatype: 'json',
+            beforeSend: function (data) {
+                temporary('mail')
+            },
+            success: function (data) {
+                $('#data').text('success')
+            },
+            complete:function (data) {
+                // affichage du response et suppression du barre de progresse
+                $('#data').html(data.responseText)
+                $('#progress').hide();
+                $('#user-agent').remove();
+            }
+        })
+
+    });
+
     if($('#url').length){
         ready();
     }
@@ -21,10 +44,10 @@ $(document).ready(function () {
                 // affichage du response et suppression du barre de progresse
                 $('#data').html(data.responseText)
                 var $title = $.trim($('#title-page').text());
-                history.replaceState({id: $title}, $title, url);
+                var newUrl = $.trim($('#url-current').text());
+                history.replaceState({id: $title}, $title, newUrl);
                 document.title = $title;
-                $('#title-page').remove();
-                currentUrl();
+                $('#user-agent').remove();
                 $('#progress').hide();
             }
         })
@@ -38,10 +61,8 @@ $(document).ready(function () {
      * change Current href with #
      */
     function currentUrl(){
-        var $name = document.title;
-        var $sel = $("a[data-title="+$name +"]");
-        if($sel.length){
-            $sel.attr('href','#');
+        if(!$("a[data-title="+document.title+"]").length){
+            alert('ok')
         }
     }
 
@@ -77,7 +98,7 @@ $(document).ready(function () {
                 // affichage du response et suppression du barre de progresse
                 $($response).html(data.responseText)
                 $($progress).hide();
-                $('#title-page').remove();
+                $('#user-agent').remove();
             }
         })
     }

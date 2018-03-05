@@ -17,11 +17,14 @@ class Navigation
      */
     public function handle($request, Closure $next)
     {
-        if(!$request->ajax()){
-            $url = str_replace("http://", "", url()->current());
-            $url = str_replace("/", "+", $url);
-            return redirect()->route('layout', compact('url'));
+        if($request->method() === 'GET'){
+            if(!$request->ajax()){
+                $url = str_replace("http://", "", url()->current());
+                $url = str_replace("/", "+", $url);
+                return redirect()->route('layout', compact('url'));
+            }
         }
+
         return $next($request);
     }
 }
