@@ -42,7 +42,7 @@ class MailController extends Controller
     {
         $user = Auth::user();
         if($this->token($user) != $request->token){
-           return back()->withErrors(['token'=>'le code que vous indiquez est erroné'])->withInput(['token']);
+           return back()->withErrors(['token'=>'invalide'])->withInput();
         }
         $user->recover()->update(['email'=>true, 'token' => false]);
         Session()->flash('success','Votre adresse mail est bien été valider');

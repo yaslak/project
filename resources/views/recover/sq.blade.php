@@ -1,51 +1,72 @@
-@extends('layouts.layout')
-@section('content')
-    <div class="card border-warning col-md-8 offset-md-2">
-        <div class="card-header border-warning">
-            <h6 class="text-warning">Questions Secrètes :</h6>
+<div id="user-agent">
+    <span id="title-page" class="hidden">{{trans('recover.recover.title-page')}}</span>
+    <span id="url-current">/recover/sq</span>
+</div>
+
+<div class="content">
+    <div class="panel border-slate-300 panel-bordered">
+        <div class="panel-heading bg-slate-300">
+            <h6 class="panel-title">
+                {{trans('recover.sq.title-panel')}}
+            </h6>
+            <div class="heading-elements">
+                <i class="icon-lock text-slate-600 mt-3"></i>
+            </div>
         </div>
-        <div class="card-body">
-            {!! Form::open(['method'=>'post','class'=>'form-horizontal']) !!}
+
+        <div class="panel-body">
+            <p style="vertical-align: inherit;">
+                @if(isset($user)) <b>{{$user->name}}</b> @endif, {{trans('recover.sq.text')}}
+            </p>
+            {!! Form::open(['method'=>'POST', 'class'=> 'form-horizontal','data-ajax'=>'true','data-response'=>'#data','id'=>'recover-sq', 'url'=>route('recoverSq.store')]) !!}
             <div class="form-group">
-                {{ Form::label('question','Choix la Question qui vous convient :') }}
-                <select name="question" class="form-control bg-secondary text-primary {{$errors->has('response') ? 'border-danger':'border-warning'}}">
-                    <option value=""></option>
+                {{ Form::label('question',trans('recover.sq.label'),['class'=>'control-label text-semibold']) }}
+            </div>
+            <div class="form-group">
+                <select name="question" id="question-select" class="form-control {{$errors->has('question') ? 'border-danger':''}}" >
+                    <option value="">{{trans('recover.sq.auto-choix')}}</option>
                     @foreach($questions as $question)
-                        <option value="{{$question->id}}">{{$question->question}}</option>
+                        <option value="{{$question->id}}" {!!  old('question') == $question->id ? 'selected' : '' !!} >{{$question->question}}</option>
                     @endforeach
                 </select>
-            </div>
-            <div class="form-group">
                 @if($errors->has('question'))
-                    <span class="text-danger">{{$errors->first('question')}}</span>
+                    <div class="form-control-feedback">
+                        <i class="icon-cancel-circle2 text-danger-300"></i>
+                    </div>
+                    <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{$errors->first('question')}}</font>
+                            </font>
+                        </span>
                 @endif
             </div>
             <div class="form-group">
-                {{ Form::label('response','Votre Réponse :') }}
-                <input type="text" id="response" name="response" value="{{old('response')}}" class="form-control bg-secondary text-warning {{$errors->has('response') ? 'border-danger':'border-warning'}}" autofocus required>
-            </div>
-            <div class="form-group">
+                <input type="text" name="response"
+                       id="response" class="form-control {{ $errors->has('response') ? 'border-danger':'' }}"
+                       value="{!! old('response')!!}"
+                       placeholder="{{trans('recover.sq.placeholder')}}"
+                       >
                 @if($errors->has('response'))
-                    <span class="text-danger">{{$errors->first('response')}}</span>
+                    <div class="form-control-feedback">
+                        <i class="icon-cancel-circle2 text-danger-300"></i>
+                    </div>
+                    <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{$errors->first('response')}}</font>
+                            </font>
+                        </span>
                 @endif
             </div>
-            <div class="form-group">
-                @if($errors)
-                    @foreach($errors as $er)
-                    <span class="text-danger">{{$er}}</span>
-                    @endforeach
-                @endif
+            <div class="stepy-navigator mt-5">
+                <button type="submit" class="position-right button-next btn bg-slate-300">
+                    {{trans('recover.sq.btn')}} <i class="icon-arrow-right14 position-right"></i>
+                </button>
             </div>
-            <div class="form-group">
-                {{ Form::submit('envoyer',['class'=>'btn btn-outline-warning float-right']) }}
-            </div>
-            {!! Form::close() !!}
-
+            {!! Form::close()!!}
         </div>
-        <div class="card-footer">
-            <em class="text-secondary">
-                veuillez indiquez la réponse qui vous conviez, il sera obligatoire en cas de pert de votre mot de passe.
-            </em>
+
+        <div class="panel-footer panel-footer-bordered">
+            <em class="text-slate-800">{{ trans('recover.sq.footer') }}</em>
         </div>
     </div>
-@stop
+</div>

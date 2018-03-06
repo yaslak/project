@@ -18,22 +18,32 @@
             <p style="vertical-align: inherit;">
                 @if(isset($user)) <b>{{$user->name}}</b> @endif, {{trans('recover.mail.text')}}
             </p>
-            <div>
-                {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','id'=>'recover-mail', 'url'=>route('recoverMail.store')]) !!}
-                {{ Form::label('token',trans('recover.mail.label')) }}
-                <div class="input-group">
-                    <span class="input-group-addon bg-slate-700"><i class="icon-lock2"></i></span>
-                    <input type="text" name="token" id="token" value="{{old('token')}}"
-                           class="form-control bg-slate-300 {{$errors->has('token') ? 'border-danger':''}}"
-                           placeholder="{{trans('recover.mail.placeholder')}}" autofocus required>
-                    <span class="input-group-addon bg-slate-700"><i class="icon-help"></i></span>
+            {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','data-ajax'=>'true','data-response'=>'#data','id'=>'recover-mail', 'url'=>route('recoverMail.store')]) !!}
+                <div class="form-group">
+                    {{ Form::label('token',trans('recover.mail.label'),['class'=>'control-label text-semibold']) }}
                 </div>
-                @if($errors->has('token')) {{ $errors->first('token') }} @endif
+                <div class="form-group">
+                    <input type="text" name="token"
+                           id="token" class="form-control {{ $errors->has('token') ? 'border-danger':'' }}"
+                           value="{!! old('token')!!}"
+                           placeholder="{{trans('recover.mail.placeholder')}}"
+                           autofocus required>
+                    @if($errors->has('token'))
+                        <div class="form-control-feedback">
+                            <i class="icon-cancel-circle2 text-danger-300"></i>
+                        </div>
+                        <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{trans('recover.validation.token')}}</font>
+                            </font>
+                        </span>
+                    @endif
+                </div>
                 <div class="stepy-navigator mt-5">
-                    <button type="submit" class="position-right button-next btn btn-primary">{{trans('recover.mail.btn')}} <i
-                                class="icon-arrow-right14 position-right"></i></button>
+                    <button type="submit" class="position-right button-next btn bg-slate-300">
+                        {{trans('recover.mail.btn')}} <i class="icon-arrow-right14 position-right"></i>
+                    </button>
                 </div>
-            </div>
             {!! Form::close()!!}
         </div>
     </div>

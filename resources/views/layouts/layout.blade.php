@@ -22,7 +22,10 @@
     <!-- /left Menu -->
         <!-- Main content -->
         <div class="content-wrapper" id="data">
-            <span class="hidden" id="url">{{ $url  }}</span>
+            @if(isset($url))
+                <span class="hidden" id="url">{{ $url  }}</span>
+            @endif
+            @yield('content-body')
         </div>
         <!-- /main content -->
         <!-- progress bar -->

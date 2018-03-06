@@ -14,5 +14,18 @@ return [
         'label' => 'Votre code de sécurité :',
         'placeholder' => 'Votre code de sécurité',
         'btn' => 'vérifier mon code'
+    ],
+    'sq'=>[
+        'title-page' => 'Question secrète',
+        'title-panel' => 'Réponse de récupération',
+        'text' => 'Veuillez sélectionner une question et répondez-y',
+        'label' => 'Votre Question ?',
+        'placeholder' => 'Votre Réponse ?',
+        'auto-choix' => 'Questions ...',
+        'footer' => 'Veuillez choisir votre réponse avec soin, elle sera obligatoire si votre mot de passe est perdu.',
+        'btn' => 'Sauvegarder'
+    ],
+    'validation' => [
+        'token' => 'votre code de sécurité est erroné, veuillez vérifier',
     ]
 ];

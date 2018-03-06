@@ -1,20 +1,21 @@
 $(document).ready(function () {
-    $('body').on('submit','form',function(e) {
+    $('body').on('submit','form[data-ajax="true"]',function(e) {
         e.preventDefault();
+        var $response = $(this).attr('data-response');
         $.ajax({
             url:  $(this).attr('action'),
             method: $(this).attr('method'),
             data:$(this).serialize(),
             datatype: 'json',
             beforeSend: function (data) {
-                temporary('mail')
+                $('#progress').show();
             },
-            success: function (data) {
-                $('#data').text('success')
+            error: function (data) {
+                console.log(data)
             },
             complete:function (data) {
                 // affichage du response et suppression du barre de progresse
-                $('#data').html(data.responseText)
+                $($response).html(data.responseText)
                 $('#progress').hide();
                 $('#user-agent').remove();
             }
@@ -113,7 +114,6 @@ $(document).ready(function () {
         var dom = getDom($key,$lang);
         if(dom){
             $('#data').html(dom);
-            alert('old')
         }
         else{
             $('#progress').show();
