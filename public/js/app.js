@@ -8,10 +8,8 @@ $(document).ready(function () {
             data:{locale:locale,_token:_token},
             datatype: 'json',
             success: function (data) {
-
             },
             error:function (data) {
-
             },
             beforeSend:function (data) {
 

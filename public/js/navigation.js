@@ -1,53 +1,94 @@
 $(document).ready(function () {
-    $('body').on('submit','form[data-ajax="true"]',function(e) {
+    $('body').on('submit', 'form[data-ajax="true"]', function (e) {
         e.preventDefault();
-        var $response = $(this).attr('data-response');
+        if (!$(this).attr('data-response')) {
+            var $response = $(this).parent()
+        } else {
+            var $response = $(this).attr('data-response');
+        }
+        var form = $(this).html();
+        var old = $(this).serialize()
         $.ajax({
-            url:  $(this).attr('action'),
+            url: $(this).attr('action'),
             method: $(this).attr('method'),
-            data:$(this).serialize(),
+            data: old,
             datatype: 'json',
             beforeSend: function (data) {
                 $('#progress').show();
             },
             error: function (data) {
-                console.log(data)
+                $($response).html(form)
+                var $e = data.responseJSON.errors
+                $.each($e, function ($key, $value) {
+                    var $c = $('[name=' + $key + ']')
+                    if ($c.length) {
+                        errors($c, $value)
+                    }
+                })
             },
-            complete:function (data) {
+            success: function (data) {
+                $('#data').html(data.responseText)
+                var $title = $.trim($('#title-page').text());
+                var newUrl = $.trim($('#url-current').text());
+                if (newUrl === document.URL) {
+                    newUrl = '/'
+                }
+                newUrl = newUrl.replace(document.URL, '');
+                newUrl = newUrl.replace(/\+/gi, '/');
+                history.pushState({id: $title}, $title, newUrl);
+                document.title = $title;
+                loadScript()
+            },
+            complete: function (data) {
                 // affichage du response et suppression du barre de progresse
-                $($response).html(data.responseText)
-                $('#progress').hide();
                 $('#user-agent').remove();
+                $('#progress').hide();
             }
         })
-
     });
 
-    if($('#url').length){
+    function errors($name, $error, $old) {
+        if ($name.parent().hasClass('has-feedback-left')) {
+            $name.parent().removeClass('has-feedback-left').addClass('has-feedback-right')
+            $name.next().remove()
+        }
+        $($name).after('<div class="form-control-feedback"><i class="icon-cancel-circle2 text-danger-300"></i></div><span class="label label-block mt-5 label-danger"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">' + $error + '</font></font></span>')
+        $($name).addClass('border-danger')
+    }
+
+    if ($('#url').length) {
         ready();
     }
+
     function ready() {
+
         var url = $.trim($('#data').text());
-        if(url === document.domain){
+        if (url === document.domain) {
             url = '/'
         }
-        url = url.replace(document.domain,'');
-        url = url.replace(/\+/gi,'/');
+        url = url.replace(document.domain, '');
+        url = url.replace(/\+/gi, '/');
         $.ajax({
             url: url,
             method: 'GET',
-            data:{'ajax':'true'},
+            data: {'ajax': 'true'},
             datatype: 'json',
             beforeSend: function (data) {
                 $('#progress').show();
             },
-            complete:function (data) {
+            complete: function (data) {
                 // affichage du response et suppression du barre de progresse
                 $('#data').html(data.responseText)
                 var $title = $.trim($('#title-page').text());
                 var newUrl = $.trim($('#url-current').text());
+                if (newUrl === document.URL) {
+                    newUrl = '/'
+                }
+                newUrl = newUrl.replace(document.URL, '');
+                newUrl = newUrl.replace(/\+/gi, '/');
                 history.replaceState({id: $title}, $title, newUrl);
                 document.title = $title;
+                loadScript()
                 $('#user-agent').remove();
                 $('#progress').hide();
             }
@@ -55,14 +96,13 @@ $(document).ready(function () {
     }
 
 
-
-    var DOM = {"ar":{},"fr":{}};
+    var DOM = {"ar": {}, "fr": {}};
 
     /**
      * change Current href with #
      */
-    function currentUrl(){
-        if(!$("a[data-title="+document.title+"]").length){
+    function currentUrl() {
+        if (!$("a[data-title=" + document.title + "]").length) {
             alert('ok')
         }
     }
@@ -72,7 +112,7 @@ $(document).ready(function () {
      */
     function prevUrl() {
         var $name = window.location;
-        $("a[href='#']").attr('href',$name);
+        $("a[href='#']").attr('href', $name);
     }
 
     /**
@@ -82,12 +122,13 @@ $(document).ready(function () {
      * @param $response
      * @param $title
      */
-    function loadContent($url,$type,$response,$title){
+    function loadContent($url, $type, $response, $title) {
+        alert('load content')
         var $progress = $('#progress');
         $.ajax({
             url: $url,
             method: $type,
-            data:{'ajax':'true'},
+            data: {'ajax': 'true'},
             datatype: 'json',
             beforeSend: function (data) {
                 temporary($title)
@@ -95,9 +136,10 @@ $(document).ready(function () {
             success: function (data) {
                 $($response).text('success')
             },
-            complete:function (data) {
+            complete: function (data) {
                 // affichage du response et suppression du barre de progresse
                 $($response).html(data.responseText)
+                loadScript()
                 $($progress).hide();
                 $('#user-agent').remove();
             }
@@ -111,11 +153,11 @@ $(document).ready(function () {
     function temporary($key) {
         addDom();
         var $lang = $("html").attr('lang');
-        var dom = getDom($key,$lang);
-        if(dom){
+        var dom = getDom($key, $lang);
+        if (dom) {
             $('#data').html(dom);
         }
-        else{
+        else {
             $('#progress').show();
         }
     }
@@ -137,9 +179,9 @@ $(document).ready(function () {
      * @returns {*}
      */
     function getDom(key, lang) {
-        if (key in DOM[lang]){
+        if (key in DOM[lang]) {
             return DOM[lang][key];
-        }else{
+        } else {
             return false;
         }
     }
@@ -147,20 +189,21 @@ $(document).ready(function () {
     /**
      * change current url in first time
      */
-   // currentUrl();
+    // currentUrl();
     /**
      * navigation with ajax
      */
-    $('body').on('click','a',function (e) {
+    $('body').on('click', "a", function (e) {
         var $url = $(this).attr('href');
         var $nav = $(this).attr('data-navigation');
         var $response = '#data';
         var $type = 'GET';
         var $title = $(this).attr('data-title');
-        if($url !== '#' && $nav && $response && $type){
+        if ($url !== '#' && $nav === 'true' && $response.length && $type.length) {
             e.preventDefault();
             prevUrl()
-            loadContent($url,$type,$response,$title);
+
+            loadContent($url, $type, $response, $title);
             history.pushState({id: $title}, $title, $url);
             document.title = $title;
             currentUrl();
@@ -168,22 +211,27 @@ $(document).ready(function () {
     });
     /**
      * get history content
-     */
-    $(window).on("popstate", function() {
+
+    $(window).on("popstate", function () {
         var $url = location.href;
         var $type = 'GET';
         var $title = document.title;
         var $response = '#data';
-        loadContent($url,$type,$response,$title);
+        //loadContent($url, $type, $response, $title);
     });
+*/
+    function loadScript() {
+        var $script = $('#scripts');
+        if ($script.length) {
+            $script = $.trim($script.text());
+            $script = $script.split(',')
+            $.each($script, function (key, val) {
+                $.getScript(val, function () {
+                });
+            });
+            $('#scripts').remove();
+        }
+    }
 
-    /*
-    $.getScript( "../js/test.js" )
-        .done(function( script, textStatus ) {
-            console.log( textStatus );
-        })
-        .fail(function( jqxhr, settings, exception ) {
-            $( "body" ).text( exception );
-        });
-    */
+
 });

@@ -1,26 +1,46 @@
-@extends('layouts.layout')
+<div id="user-agent">
+    <span id="title-page" class="hidden">{{trans('pswr.target.title-page')}}</span>
+    <span id="url-current">/password/target</span>
+</div>
+<div class="content">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+    <div class="panel panel-body login-form">
+        <div class="text-center">
+            <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+            <h5 class="content-group">{{trans('pswr.target.login-title')}}
+                <small class="display-block">{{trans('pswr.target.login-title2')}}</small>
+            </h5>
+        </div>
+        {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','data-ajax'=>'true','data-response'=>'#data','id'=>'recover-target', 'url'=>route('reset.target.store')]) !!}
+        <div class="form-group has-feedback {{ $errors->has('target') ? 'has-feedback-right':'has-feedback-left' }}">
+            <input type="text"
+                   name="target"
+                   class="form-control {{ $errors->has('target') ? 'border-danger':'' }}"
+                   placeholder="{{trans('pswr.target.placeholder')}}"
+                   value="{{old('target')}}" autofocus required>
 
-@section('content')
-    <div class="card border-warning col-md-8 offset-md-2">
-        <div class="card-header border-warning">
-            <h5 class="text-warning">Procédure de récupération du mots de passe : </h5>
-        </div>
-        <div class="card-body">
-            {!! Form::open(['method'=>'put','class'=>'form-horizontal','url'=>route('reset.target.store')]) !!}
-                <div class="form-group">
-                    {{ Form::label('target',"veuillez indiquez votre nom d'utilisateur ou votre adresse email:",
-                    ['class'=>'text-secondary']) }}
-                    <input type="text" name="target" id="target" value="{{old('target')}}" class="form-control bg-secondary text-warning {{$errors->has('target') ? 'border-danger':'border-warning'}}" autofocus required>
+            @if($errors->has('target'))
+                <div class="form-control-feedback">
+                    <i class="icon-cancel-circle2 text-danger-300"></i>
                 </div>
-            @if ($errors->has('target'))
-                <span class="form-text text-danger">
-                    <em>{{ $errors->first('target') }}</em>
-                </span>
+                <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{ trans('pswr.validation.target') }}</font>
+                            </font>
+                        </span>
+            @else
+                <div class="form-control-feedback">
+                    <i class="icon-user text-muted"></i>
+                </div>
             @endif
-                <div class="form-group">
-                    {{ Form::submit('Cibler',['class'=>'btn btn-outline-warning float-right']) }}
-                </div>
-            {!! Form::close() !!}
         </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn bg-blue btn-block">{{trans('pswr.target.btn')}} <i
+                        class="icon-arrow-right14 position-right"></i></button>
+        </div>
+
+        {!! Form::close() !!}
     </div>
-@stop
+    </div>
+</div>

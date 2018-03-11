@@ -7,7 +7,10 @@ use App\Http\Requests\Auth\Password\TargetRequest;
 use App\Model\Auth\Password\update_password;
 use App\Model\Recover\Recover;
 use App\User;
-use Carbon\Carbon;
+use Carbon\Carbon;;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class TargetController extends Controller
 {
@@ -24,20 +27,28 @@ class TargetController extends Controller
 
     /**
      * start the targeting process
-     * @param TargetRequest $request
+     * @param TargetRequest|Request $request
      * @param User $user
      * @param Recover $recover
      * @param update_password $update_password
      * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function store(TargetRequest $request,User $user,Recover $recover,update_password $update_password)
+    public function store(Request $request,User $user,Recover $recover,update_password $update_password)
     {
+        $validator = Validator::make($request->all(), [
+            'target' => 'required|string|max:255|min:4'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $user_id = $this->target($user, $request->target);
         if($user_id){
             $recover_id = $this->recover($user,$recover, $user_id->id);
             if($recover_id){
                 $token = $this->procedure($update_password,$recover_id->id);
-                return redirect()->route('reset.lp.show',$token);
+                return redirect(url(route('reset.lp.show',$token)));
             }
             return view('auth.passwords.invalideRecover');
         }
@@ -173,6 +184,6 @@ class TargetController extends Controller
 
     private function deleteToken($update_password, $recover_id)
     {
-        $update_password->where('recover_id',$recover_id)->first()->delete();
+        $update_password->where('recover_id',$recover_id)->first() ? $update_password->where('recover_id',$recover_id)->first()->delete() : null;
     }
 }

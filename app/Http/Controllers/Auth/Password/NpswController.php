@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Auth\Password;
 
-use App\Http\Requests\Auth\Password\NpswRequest;
 use App\Http\Controllers\Controller;
 use App\Model\Auth\Password\Old_password;
 use App\Model\Auth\Password\update_password;
 use App\Traits\Password\TargetTrait;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class NpswController extends Controller
 {
@@ -18,39 +19,56 @@ class NpswController extends Controller
     /**
      * show new password form
      * @param $token
+     * @param update_password $update_password
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index($token)
+    public function index($token,update_password $update_password)
     {
-        return view('auth.passwords.new_password',compact('token'));
+        $recover = $this->Recover($update_password,$token);
+        if($recover){
+            return view('auth.passwords.new_password')->with(['token'=>$token]);
+        }
+        return redirect(url(route('home')));
     }
 
     /**
      * update password and insert current password in old_password
-     * @param NpswRequest $request
+     * @param Request $request
      * @param update_password $update_password
      * @param Old_password $old_password
      * @param $token
      * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function store(NpswRequest $request,update_password $update_password, Old_password $old_password,$token)
+    public function store(Request $request,update_password $update_password, Old_password $old_password,$token)
     {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:6|confirmed'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $recover = $this->Recover($update_password,$token);
         if($recover){
             $old = $this->old_password_id($old_password,$recover->id);
             if($old){
                 $check = $this->check($old_password,$recover->id,$request->password);
-                if(!$check){
+                if($check){
                     // update password
-                    $current_password = $this->current_password($recover);
-                    $this->insertOldPassword($current_password,$recover->id,$old_password);
-                    $this->new_password($request->password,$recover);
-                    $this->delete_update_password($update_password,$recover->id);
-                    Session()->flash('success','votre mot passe est modifier');
-                    return redirect()->route('home');
+                    return back()->withErrors(['password'=>'ce mot de passe a été déjà modifier'])->withInput(['password']);
                 }
-                return back()->withErrors(['password'=>'ce mot de passe a été déjà modifier'])->withInput(['password']);
+                $current_password = $this->current_password($recover);
+                $this->insertOldPassword($current_password,$recover->id,$old_password);
+                $this->new_password($request->password,$recover);
+                $this->delete_update_password($update_password,$recover->id);
             }
+            $current_password = $this->current_password($recover);
+            $this->insertOldPassword($current_password,$recover->id,$old_password);
+            $this->new_password($request->password,$recover);
+            $this->delete_update_password($update_password,$recover->id);
+            Session()->flash('success','votre mot passe est modifier');
+            return redirect(url(route('home')));
         }
         return view('auth.passwords.expiredToken');
     }

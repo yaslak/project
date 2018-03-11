@@ -24,7 +24,7 @@ class LpRequest extends FormRequest
     public function rules()
     {
         return [
-           'password' => 'required|min:4|max:255'
+           'password' => 'required|min:6|max:255'
         ];
     }
 }

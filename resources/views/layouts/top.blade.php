@@ -41,10 +41,6 @@
                                 العربية</a>
                         </li>
                             @endif
-                            <form id="language" method="POST"
-                                  style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
                     </ul>
                 </li>
 
@@ -200,15 +196,11 @@
                                 </li>
                             @else
                                 <li>
-                                    <a href="#" data-lang="ar" class="text-right">
+                                    <a href="#" data-lang="ar">
                                         <img src="{{asset('images/flags/ar.png')}}" alt="">
-                                        العربية</a>
+                            العربية</a>
                                 </li>
                             @endif
-                            <form id="language" method="POST"
-                                  style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
                         </ul>
                     </li>
 
@@ -309,7 +301,11 @@
 
                     <li class="dropdown dropdown-user">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="{{asset('images/flags/ua.png')}}" alt=""/>
+                            @if(isset($info) and !empty($info->photo_profil))
+                            <img src="{{ asset($info->photo_profil) }}" alt=""/>
+                                @else
+                                <img src="{{asset('images/profil/profil.png')}}" alt=""/>
+                            @endif
                             <span>
                                 @if(isset($user)) {{$user->name}} @endif
                             </span>
@@ -318,7 +314,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>
-                                <a href="{{route('recover.recover')}}" data-navigation="true" data-title="Recover">
+                                <a href="{{route('profil')}}" data-navigation="true" data-title="@if(isset($user)) {{$user->name}} @else 'Profil' @endif">
                                     <i class="icon-user-plus"></i> My profile
                                 </a>
                             </li>
@@ -342,5 +338,10 @@
                 </ul>
             </div>
             @endguest
+
+            <form id="language"  method="POST"
+                  style="display: none;">
+                {{ csrf_field() }}
+            </form>
 </div>
 <!-- /main navbar -->

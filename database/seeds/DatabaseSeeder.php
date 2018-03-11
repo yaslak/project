@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
         $this->call(QuestionsSeeds::class);
         $this->call(RecoversSeeds::class);
         $this->call(UserSeeds::class);
+        $this->call(ProfilSeeds::class);
     }
 }

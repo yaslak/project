@@ -2,7 +2,7 @@
 
 @section('content-body')
     <!-- Advanced login -->
-    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4 mt-10">
         <form class="form-horizontal" method="POST" action="{{ route('register') }}">
             {{ csrf_field() }}
             <div class="panel panel-body login-form">

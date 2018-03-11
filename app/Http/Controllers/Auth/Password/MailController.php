@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Mail\Mailer;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class MailController extends Controller
 {
@@ -37,10 +38,10 @@ class MailController extends Controller
             $valide = $this->valideMail($update_password,$token);
             if($valide){
                 //$this->mail($update_password,$token,$mailer);
-                return view('auth.passwords.email',compact('token'));
+                return view('auth.passwords.email')->with(['token'=>$token]);
             }
             Session()->flash('success','veuillez ressayer a nouveau');
-            return redirect()->route('reset.target.show');
+            return redirect(url(route('reset.target.show')));
         }
         return view('auth.passwords.expiredToken');
     }
@@ -66,12 +67,20 @@ class MailController extends Controller
      * update code security
      * redirect in new password
      * @param update_password $update_password
-     * @param MailRequest $request
      * @param $token
+     * @param MailRequest|Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function store(update_password $update_password,$token,MailRequest $request)
+    public function store(update_password $update_password,$token,Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'code'=>'required|string|min:6|max:255'
+        ]);
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput();
+        }
         $recover = $this->Recover($update_password,$token);
         if($recover){
             $isset = $this->issetCode($update_password,$token);

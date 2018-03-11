@@ -20,7 +20,7 @@ Route::get('/dlfqdskjghlqkdsfghlqkdfjhgqdhfglkjqdhfgkjhqdfkljghlqkdfghlkqf/{url}
     ));
 
 // home
-    Route::get('/', 'Home\HomeController@index')->middleware('layout')->name('home');
+    Route::get('/', 'Home\HomeController@index')->middleware('recovred')->middleware('layout')->name('home');
 
 // auth
     Auth::routes();
@@ -63,7 +63,8 @@ Route::get('/dlfqdskjghlqkdsfghlqkdfjhgqdhfglkjqdhfgkjhqdfkljghlqkdfghlkqf/{url}
 // profil
 
     Route::prefix('membre')->namespace('Membre')->middleware('auth')->group(function (){
-        Route::get('profil','ProfilController@index')->name('profil');
+        Route::get('profil/{slug?}','ProfilController@index')->name('profil');
+        Route::put('profil','ProfilController@update')->name('profil-update');
     });
 
 

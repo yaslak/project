@@ -1,32 +1,44 @@
-@extends('layouts.layout')
-@section('content')
-    <div class="card border-warning col-md-8 offset-md-2">
-        <div class="card-header border-warning">
-            <h6 class="text-warning">Last password :</h6>
-        </div>
-        <div class="card-body">
-            {!! Form::open(['method'=>'put','class'=>'form-horizontal']) !!}
-            <p class="text-light">
-                veuillez indiquez le mot de passe que vous souvenez si possible.
-            </p>
-            <div class="form-group">
-                {{ Form::label('password','last password : ') }}
-                <input type="password" name="password" id="password" class="form-control bg-secondary text-warning {{$errors->has('password') ? 'border-danger':'border-warning'}}" autofocus required>
+<div id="user-agent">
+    <span id="title-page" class="hidden">{{trans('pswr.lp.title-page')}}</span>
+    <span id="url-current">{{ url()->current() }}</span>
+</div>
+<div class="content">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+        <div class="panel panel-body login-form">
+            <div class="text-center">
+                <div class="icon-object border-slate-300 text-slate-300"><i class="icon-reading"></i></div>
+                <h5 class="content-group">{{trans('pswr.lp.login-title')}}
+                    <small class="display-block">{{trans('pswr.lp.login-title2')}}</small>
+                </h5>
             </div>
-            @if ($errors->has('password'))
-                <span class="form-text text-danger">
-                    <em>{{ $errors->first('password') }}</em>
-                </span>
-            @endif
-            <div class="form-group">
-                {{ Form::submit('Examiné',['class'=>'btn btn-outline-warning float-right']) }}
+            {!! Form::open(['method'=>'put', 'class'=> 'form-horizontal','data-ajax'=>'true','data-response'=>'#data','id'=>'recover-lp', 'url'=>"password/last_password/$token"]) !!}
+            <div class="form-group has-feedback {{ $errors->has('password') ? 'has-feedback-right':'has-feedback-left' }}">
+                <input type="password"
+                       name="password"
+                       class="form-control {{ $errors->has('password') ? 'border-danger':'' }}"
+                       placeholder="{{trans('pswr.lp.placeholder')}}"
+                        autofocus >
+
+                @if($errors->has('password'))
+                    <div class="form-control-feedback">
+                        <i class="icon-cancel-circle2 text-danger-300"></i>
+                    </div>
+                    <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{ trans('pswr.validation.lp') }}</font>
+                            </font>
+                        </span>
+                @else
+                    <div class="form-control-feedback">
+                        <i class="icon-user text-muted"></i>
+                    </div>
+                @endif
             </div>
-            {!! Form::open() !!}
-        </div>
-        <div class="card-footer">
-            <em class="text-secondary">
-                Cette étape est optionnel si vous ne souvenez veuillez indiquez six zéro.
-            </em>
+            <div class="form-group">
+                <button type="submit" class="btn bg-blue btn-block">{{trans('pswr.lp.btn')}} <i
+                            class="icon-arrow-right14 position-right"></i></button>
+            </div>
+            {!! Form::close() !!}
         </div>
     </div>
-@stop
+</div>

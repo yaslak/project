@@ -2,7 +2,7 @@
 
 @section('content-body')
     <!-- Advanced login -->
-    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4 mt-10">
         <form class="form-horizontal" method="POST" action="{{ route('login') }}">
             {{ csrf_field() }}
             <div class="panel panel-body login-form">
@@ -13,35 +13,51 @@
                     </h5>
                 </div>
 
-                <div class="form-group has-feedback has-feedback-left">
+                <div class="form-group has-feedback {{ $errors->has('name') ? 'has-feedback-right':'has-feedback-left' }}">
                     <input type="text"
                            name="name"
-                           class="form-control @if($errors->has('name')) border-danger @endif"
+                           class="form-control {{ $errors->has('name') ? 'border-danger':'' }}"
                            placeholder="{{trans('validation.attributes.username')}}"
                            value="{{old('name')}}"
                     >
-                    <div class="form-control-feedback">
-                        <i class="icon-user text-muted"></i>
-                    </div>
+
+                    @if($errors->has('name'))
+                        <div class="form-control-feedback">
+                            <i class="icon-cancel-circle2 text-danger-300"></i>
+                        </div>
+                        <span class="label label-block mt-5 label-danger">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">{{ $errors->first('name') }}</font>
+                            </font>
+                        </span>
+                    @else
+                        <div class="form-control-feedback">
+                            <i class="icon-user text-muted"></i>
+                        </div>
+                    @endif
                 </div>
-                @if ($errors->has('name'))
-                    <span class="form-text text-danger">
-                        <em>{{ $errors->first('name') }}</em>
-                    </span>
-                @endif
-                <div class="form-group has-feedback has-feedback-left">
+                <div class="form-group has-feedback @if($errors->has('password') OR $errors->has('name')) has-feedback-right @else has-feedback-left @endif">
                     <input type="password" name="password"
-                           class="form-control @if($errors->has('password')) border-danger @endif"
+                           class="form-control @if($errors->has('password') OR $errors->has('name')) border-danger @endif"
                            placeholder="{{trans('validation.attributes.password')}}" required>
-                    <div class="form-control-feedback">
-                        <i class="icon-lock2 text-muted"></i>
-                    </div>
+
+                    @if($errors->has('password') OR $errors->has('name'))
+                        <div class="form-control-feedback">
+                            <i class="icon-cancel-circle2 text-danger-300"></i>
+                        </div>
+                        @if($errors->has('password'))
+                            <span class="label label-block mt-5 label-danger">
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">{{ $errors->first('password') }}</font>
+                                </font>
+                            </span>
+                        @endif
+                    @else
+                        <div class="form-control-feedback">
+                            <i class="icon-lock2 text-muted"></i>
+                        </div>
+                    @endif
                 </div>
-                @if ($errors->has('password'))
-                    <span class="form-text text-danger">
-            <em>{{ $errors->first('password') }}</em>
-                                </span>
-                @endif
                 <div class="form-group login-options">
                     <div class="row">
                         <div class="col-sm-6">
@@ -52,7 +68,7 @@
                         </div>
 
                         <div class="col-sm-6 text-right">
-                            <a href="{{route('reset.target.store')}}">{{trans('validation.attributes.Forgot')}}</a>
+                            <a href="{{route('reset.target.store')}}" data-title="target" data-navigation="true">{{trans('validation.attributes.Forgot')}}</a>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,10 @@ class UserSeeds extends Seeder
             'name' => 'name123',
             'email' => 'email@email.email',
             'password' => bcrypt('000000'),
-            'recover_id' => 1
+            'recover_id' => 1,
+            'info_id' => 1,
+            'created_at' => \Carbon\Carbon::now(),
+            'updated_at' => \Carbon\Carbon::now()
         ]);
     }
 }
